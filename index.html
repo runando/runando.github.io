@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fernando Vivas — IA, Desarrollo Software, Digitalización y Transformación Digital Pública</title>
+<meta name="description" content="Fernando Vivas. Físico e ingeniero de software con 20 años de obra. IA, Desarrollo Software, Digitalización y Transformación Digital Pública." />
+<meta name="theme-color" content="#0a0b0f" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Fernando Vivas — IA, Desarrollo Software, Digitalización y Transformación Digital Pública" />
+<meta property="og:description" content="Físico e ingeniero de software con 20 años de obra. IA, digitalización, datos y transformación digital en la administración pública." />
+<meta property="og:image" content="https://runando.github.io/fvivas.jpg" />
+<meta property="og:url" content="https://runando.github.io/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Fernando Vivas — IA, Desarrollo Software, Digitalización y Transformación Digital Pública" />
+<meta name="twitter:description" content="Físico e ingeniero de software con 20 años de obra. IA, Desarrollo Software, Digitalización y Transformación Digital Pública." />
+<meta name="twitter:image" content="https://runando.github.io/fvivas.jpg" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root, [data-theme="dark"] {
+    --bg: #0a0b0f;
+    --bg-soft: #111319;
+    --bg-card: #0e1016;
+    --ink: #eef0f4;
+    --ink-dim: #c7ccd8;
+    --muted: #8b90a0;
+    --line: #1d212b;
+    --accent: #5ff2c9;
+    --accent-2: #7aa2ff;
+    --wave1: rgba(95,242,201,0.45);
+    --wave2: rgba(122,162,255,0.35);
+    --wave3: rgba(95,242,201,0.18);
+    --img-filter: grayscale(0.15) contrast(1.05) brightness(0.95);
+    --grid-op: 0.4;
+    --glow-op: 0.22;
+  }
+  [data-theme="light"] {
+    --bg: #f4f2ec;
+    --bg-soft: #ffffff;
+    --bg-card: #fbfaf6;
+    --ink: #14161c;
+    --ink-dim: #3a3f4c;
+    --muted: #767b88;
+    --line: #e4e1d7;
+    --accent: #0e9e78;
+    --accent-2: #3a5bd0;
+    --wave1: rgba(14,158,120,0.30);
+    --wave2: rgba(58,91,208,0.20);
+    --wave3: rgba(14,158,120,0.12);
+    --img-filter: contrast(1.02) saturate(1.05);
+    --grid-op: 0.5;
+    --glow-op: 0.16;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+    transition: background 0.4s ease, color 0.4s ease;
+  }
+
+  .wave-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.55; pointer-events: none; }
+  .grid-overlay {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 0%, transparent 80%);
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 0%, transparent 80%);
+    opacity: var(--grid-op);
+  }
+  .glow { position: fixed; z-index: 0; pointer-events: none; width: 60vmax; height: 60vmax; border-radius: 50%; filter: blur(120px); opacity: var(--glow-op); }
+  .glow.a { top: -20vmax; left: -10vmax; background: var(--accent-2); }
+  .glow.b { bottom: -25vmax; right: -15vmax; background: var(--accent); }
+
+  .wrap { position: relative; z-index: 2; max-width: 920px; margin: 0 auto; padding: clamp(1.6rem, 5vw, 3rem) clamp(1.4rem, 5vw, 3rem) 4rem; }
+
+  .status {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+    border-bottom: 1px solid var(--line); padding-bottom: 1rem; margin-bottom: clamp(2rem, 5vw, 3rem);
+    opacity: 0; animation: rise 0.7s ease forwards;
+  }
+  .status .live { display: flex; align-items: center; gap: 0.5rem; color: var(--accent); }
+  .status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: pulse 2s infinite; }
+  .theme-btn {
+    background: var(--bg-soft); color: var(--ink); border: 1px solid var(--line);
+    font-family: inherit; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.4rem 0.7rem; border-radius: 999px; cursor: pointer; transition: all 0.25s ease;
+  }
+  .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .banner {
+    width: 100%; border-radius: 16px; border: 1px solid var(--line); display: block;
+    filter: var(--img-filter); box-shadow: 0 30px 70px -30px rgba(0,0,0,0.7);
+    opacity: 0; animation: rise 0.8s 0.1s ease forwards; margin-bottom: 2.2rem;
+  }
+  .banner-caption { display:flex; justify-content:space-between; gap:1rem; font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin:-1.6rem 0 2.4rem; opacity:0; animation: rise 0.8s 0.2s ease forwards; }
+  .banner-caption span { flex:1; text-align:center; }
+
+  .role-line { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.8rem; opacity: 0; animation: rise 0.8s 0.2s ease forwards; }
+
+  h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.6rem, 9vw, 5.2rem); line-height: 0.96; letter-spacing: -0.02em; opacity: 0; animation: rise 0.8s 0.25s ease forwards; }
+  h1 .equation { display: block; margin-top: 0.8rem; font-size: clamp(1.05rem, 3.2vw, 1.7rem); font-weight: 700; line-height: 1.14; color: var(--ink-dim); max-width: 24ch; }
+  h1 .equation b { color: var(--ink); }
+  h1 .equation .arrow { color: var(--accent); padding: 0 0.15em; }
+  .kw-strip { font-size: clamp(0.78rem, 2vw, 0.95rem); letter-spacing: 0.04em; color: var(--muted); margin-top: 1.1rem; opacity: 0; animation: rise 0.8s 0.3s ease forwards; }
+  .kw-strip b { color: var(--accent); font-weight: 500; }
+
+  .lede { font-size: clamp(0.98rem, 2.4vw, 1.18rem); max-width: 60ch; color: var(--ink-dim); margin-top: 1.8rem; opacity: 0; animation: rise 0.8s 0.35s ease forwards; }
+  .lede b { color: var(--ink); font-weight: 700; }
+  .lede .hi { color: var(--accent); }
+
+  .now { border-left: 2px solid var(--accent); padding: 0.8rem 0 0.8rem 1.2rem; background: linear-gradient(90deg, rgba(95,242,201,0.06), transparent 60%); font-size: 0.92rem; color: var(--ink-dim); margin-top: 1.8rem; opacity: 0; animation: rise 0.8s 0.4s ease forwards; }
+  .now .label { display: block; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+  .now b { color: var(--ink); }
+
+  .block { margin-top: clamp(2.4rem, 6vw, 3.5rem); }
+  .section-label { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; }
+
+  .tracks { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .track { background: var(--bg-soft); padding: 1.1rem 1.2rem; transition: background 0.3s ease; }
+  .track .k { font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
+  .track .v { font-size: 0.86rem; color: var(--ink-dim); }
+
+  /* projects */
+  .projects { display: flex; flex-direction: column; gap: 1rem; }
+  .project {
+    background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 1.4rem 1.5rem; position: relative; overflow: hidden;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .project::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); opacity: 0.6; transition: opacity 0.25s ease; }
+  .project:hover { transform: translateX(4px); border-color: var(--accent); box-shadow: 0 18px 40px -22px rgba(95,242,201,0.35); }
+  .project:hover::before { opacity: 1; }
+  .p-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.2rem; }
+  .p-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.12rem; color: var(--ink); }
+  .p-date { font-size: 0.72rem; letter-spacing: 0.08em; color: var(--muted); white-space: nowrap; }
+  .p-org { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.7rem; }
+  .p-desc { font-size: 0.88rem; color: var(--ink-dim); margin-bottom: 0.9rem; }
+  .p-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .p-tag { font-size: 0.68rem; padding: 0.25rem 0.6rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+  .more-note { font-size: 0.78rem; color: var(--muted); text-align: center; margin-top: 1rem; }
+
+  .stack { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-size: 0.74rem; padding: 0.35rem 0.7rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); transition: all 0.25s ease; cursor: default; }
+  .tag:hover { color: var(--bg); background: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+
+  .links { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+  .link { flex: 1 1 140px; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; padding: 0.95rem 1.1rem; border: 1px solid var(--line); border-radius: 12px; color: var(--ink); text-decoration: none; font-size: 0.84rem; letter-spacing: 0.04em; transition: all 0.25s ease; background: var(--bg-soft); }
+  .link:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 30px -12px rgba(95,242,201,0.3); }
+  .link .arrow { color: var(--muted); transition: transform 0.25s ease, color 0.25s ease; }
+  .link:hover .arrow { color: var(--accent); transform: translate(3px,-3px); }
+
+  footer { margin-top: 3.5rem; padding-top: 1.2rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, .banner, .status, h1, .lede, .now, .role-line, .banner-caption { animation: none !important; opacity: 1 !important; }
+    .wave-canvas { display: none; }
+  }
+</style>
+</head>
+<body>
+  <canvas class="wave-canvas" id="wave"></canvas>
+  <div class="grid-overlay"></div>
+  <div class="glow a"></div>
+  <div class="glow b"></div>
+
+  <main class="wrap">
+    <div class="status">
+      <span class="live"><span class="dot"></span>runando · Badajoz · ES</span>
+      <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema">◐ Tema</button>
+    </div>
+
+    <img class="banner" src="fvivas.jpg" alt="Fernando Vivas: running, gravel, fotografía y desarrollo de software" />
+
+    <div class="role-line">Físico e Ingeniero de Software</div>
+    <h1>
+      Fernando Vivas
+      <span class="equation">IA, Desarrollo Software, Digitalización y Transformación Digital en la administración pública</span>
+    </h1>
+    <div class="kw-strip">Smart Cities <b>·</b> LoRaWAN <b>·</b> Datos <b>·</b> Arquitectura SW</div>
+
+    <p class="lede">
+      Físico de formación e ingeniero de software con <span class="hi">más de 20 años</span> construyendo sistemas reales en producción —banca, aerolíneas, redes eléctricas y agua—. <b>IA, Desarrollo Software, Digitalización y Transformación Digital</b> en la administración pública.
+    </p>
+
+    <div class="now">
+      <span class="label">// ahora</span>
+      Involucrado en proyectos estratégicos de <b>IA, datos, IoT, LoRaWAN, automatización y datos</b> en la Diputación de Badajoz, dentro de la Red de Ciudades Inteligentes.
+    </div>
+
+    <section class="block">
+      <div class="section-label">// trayectoria en cuatro ejes</div>
+      <div class="tracks">
+        <div class="track"><div class="k">Formación</div><div class="v">Ciencias Físicas — Univ. de Extremadura</div><div class="v">Certificación Java oficial</div></div>
+        <div class="track"><div class="k">Experiencia</div><div class="v">20+ años como dev &amp; analista</div></div>
+        <div class="track"><div class="k">Terreno actual</div><div class="v">IA · Desarrollo SW · datos · IoT · sector público</div></div>
+        <div class="track"><div class="k">Fuera de pantalla</div><div class="v">Atletismo · Gravel · Fotografía</div></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-label">// proyectos destacados</div>
+      <div class="projects">
+
+        <article class="project">
+          <div class="p-org">Diputación de Badajoz</div>
+          <div class="p-head"><span class="p-title">Responsable de IA · Transformación Digital</span><span class="p-date">dic 2025 → hoy</span></div>
+          <p class="p-desc">Cabeza visible de la IA. Dirección de proyectos estratégicos de IA, automatización y datos; gestión de licitaciones tecnológicas y plataformas corporativas. Miembro de grupos de trabajo nacionales de la Red de Ciudades Inteligentes.</p>
+          <div class="p-tags"><span class="p-tag">IA</span><span class="p-tag">Automatización</span><span class="p-tag">Datos</span><span class="p-tag">Contratación pública</span><span class="p-tag">Infraestructura</span></div>
+        </article>
+
+        <article class="project">
+          <div class="p-org">Consorcio Promedio</div>
+          <div class="p-head"><span class="p-title">Técnico de Programación y Análisis</span><span class="p-date">abr 2024 → dic 2025</span></div>
+          <p class="p-desc">Digitalización del ciclo integral del agua: modelos de big data en Python, integraciones con SCADA y dispositivos IoT vía LoRaWAN, modelos predictivos de IA, ETLs y visualización. Co-gestión de servidores y clústeres.</p>
+          <div class="p-tags"><span class="p-tag">Python</span><span class="p-tag">Big Data</span><span class="p-tag">LoRaWAN</span><span class="p-tag">IoT</span><span class="p-tag">SCADA · MQTT · Modbus</span><span class="p-tag">ChirpStack</span><span class="p-tag">Docker Swarm</span></div>
+        </article>
+
+        <article class="project">
+          <div class="p-org">Indra · Responsable técnico</div>
+          <div class="p-head"><span class="p-title">Gestión de distribución eléctrica y agua</span><span class="p-date">2017 → 2025</span></div>
+          <p class="p-desc">Liderazgo de equipo técnico y desarrollo de un sistema avanzado de gestión de distribución: backend de microservicios y frontend geoespacial en tiempo real, integrado con SCADA.</p>
+          <div class="p-tags"><span class="p-tag">DDD</span><span class="p-tag">Spring Boot</span><span class="p-tag">ProtocolBuffer</span><span class="p-tag">ActiveMQ</span><span class="p-tag">PostGIS</span><span class="p-tag">VueJS · OpenLayers</span><span class="p-tag">WebSocket</span></div>
+        </article>
+
+        <article class="project">
+          <div class="p-org">Indra · Ingeniero Senior</div>
+          <div class="p-head"><span class="p-title">Revenue accounting para aerolíneas (IATA)</span><span class="p-date">2013 → 2016</span></div>
+          <p class="p-desc">Producto de contabilidad de ingresos para aerolíneas de la IATA, diseñado bajo Domain-Driven Design y metodología SCRUM sobre arquitectura web multicapa.</p>
+          <div class="p-tags"><span class="p-tag">DDD</span><span class="p-tag">JEE 8</span><span class="p-tag">PostgreSQL</span><span class="p-tag">JSF · Primefaces</span><span class="p-tag">SCRUM</span></div>
+        </article>
+
+        <article class="project">
+          <div class="p-org">Indra · Ingeniero Senior</div>
+          <div class="p-head"><span class="p-title">Red Eléctrica de España (REE)</span><span class="p-date">2009 → 2013</span></div>
+          <p class="p-desc">Portal web para el operador de los sistemas eléctricos español (Península, Canarias, Baleares, Ceuta y Melilla), sobre arquitectura J2EE y SOA.</p>
+          <div class="p-tags"><span class="p-tag">J2EE</span><span class="p-tag">SOA</span><span class="p-tag">Spring Web Flow</span><span class="p-tag">Flex · ActionScript</span><span class="p-tag">ICEfaces</span><span class="p-tag">Hibernate</span></div>
+        </article>
+
+      </div>
+      <p class="more-note">+ aseguradoras (AVIVA, Mapfre…), gestión de fondos y control de tráfico aéreo · 2004–2009</p>
+    </section>
+
+    <section class="block">
+      <div class="section-label">// stack</div>
+      <div class="stack">
+        <span class="tag">Inteligencia Artificial</span><span class="tag">Python</span><span class="tag">Big Data</span><span class="tag">LoRaWAN</span><span class="tag">IoT</span><span class="tag">ChirpStack</span><span class="tag">SCADA</span><span class="tag">MQTT</span><span class="tag">Go</span><span class="tag">Java / JEE</span><span class="tag">Spring Boot</span><span class="tag">Kafka</span><span class="tag">PostgreSQL / PostGIS</span><span class="tag">Docker Swarm</span><span class="tag">VueJS</span><span class="tag">DDD · TDD</span>
+        <span class="tag">SQL</span><span class="tag">Servidores de aplicaciones</span><span class="tag">JBOSS</span><span class="tag">TOMCAT</span><span class="tag"><span class="tag">NGINX</span>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-label">// dónde encontrarme</div>
+      <div class="links">
+        <a class="link" href="https://x.com/runando" target="_blank" rel="noopener">X / @runando <span class="arrow">&#8599;</span></a>
+        <a class="link" href="https://github.com/runando" target="_blank" rel="noopener">GitHub <span class="arrow">&#8599;</span></a>
+        <a class="link" href="https://www.linkedin.com/in/fernando-vivas-1a032380/" target="_blank" rel="noopener">LinkedIn <span class="arrow">&#8599;</span></a>
+      </div>
+    </section>
+
+    <footer>
+      <span>&copy; <span id="year"></span> Fernando Vivas</span>
+      <span>runando.github.io</span>
+    </footer>
+  </main>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ---- Theme toggle (persists on GitHub Pages; degrades gracefully elsewhere) ----
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('themeBtn');
+    var stored = null;
+    try { stored = localStorage.getItem('theme'); } catch (e) {}
+    if (stored) root.setAttribute('data-theme', stored);
+    function setMeta() {
+      var t = root.getAttribute('data-theme');
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', t === 'light' ? '#f4f2ec' : '#0a0b0f');
+    }
+    setMeta();
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      setMeta();
+    });
+  })();
+
+  // ---- Signal wave: physics + LoRa radio + running cadence ----
+  (function () {
+    var canvas = document.getElementById('wave');
+    if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ctx = canvas.getContext('2d');
+    var w, h, t = 0;
+    function resize() { w = canvas.width = innerWidth * devicePixelRatio; h = canvas.height = innerHeight * devicePixelRatio; }
+    resize(); addEventListener('resize', resize);
+    function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      var mid = h * 0.62;
+      var waves = [
+        { amp: 0.06, freq: 0.004, speed: 0.18, color: cssVar('--wave1'), off: 0 },
+        { amp: 0.045, freq: 0.006, speed: 0.12, color: cssVar('--wave2'), off: 2 },
+        { amp: 0.03, freq: 0.009, speed: 0.25, color: cssVar('--wave3'), off: 4 }
+      ];
+      for (var i = 0; i < waves.length; i++) {
+        var wv = waves[i];
+        ctx.beginPath(); ctx.lineWidth = 1.4 * devicePixelRatio; ctx.strokeStyle = wv.color;
+        for (var x = 0; x <= w; x += 4) {
+          var y = mid + Math.sin(x * wv.freq + t * wv.speed + wv.off) * h * wv.amp
+                      + Math.sin(x * wv.freq * 0.5 + t * wv.speed * 0.4) * h * wv.amp * 0.4;
+          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      t += 0.6; requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+</script>
+</body>
+</html>
