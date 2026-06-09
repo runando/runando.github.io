@@ -6,6 +6,7 @@
 <title>Fernando Vivas — IA, Desarrollo Software, Digitalización y Transformación Digital Pública</title>
 <meta name="description" content="Fernando Vivas. Físico e ingeniero de software con 20 años de obra. IA, Desarrollo Software, Digitalización y Transformación Digital Pública." />
 <meta name="theme-color" content="#0a0b0f" />
+<link rel="alternate" type="application/rss+xml" title="Fernando Vivas — Blog" href="feed.xml" />
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Fernando Vivas — IA, Desarrollo Software, Digitalización y Transformación Digital Pública" />
@@ -171,6 +172,61 @@
     *, .banner, .status, h1, .lede, .now, .role-line, .banner-caption { animation: none !important; opacity: 1 !important; }
     .wave-canvas { display: none; }
   }
+
+  /* ---- nav ---- */
+  .status .right { display: flex; align-items: center; gap: 1.1rem; }
+  .nav { display: flex; gap: 1rem; }
+  .nav a { color: var(--muted); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.2s ease; }
+  .nav a:hover, .nav a.active { color: var(--accent); }
+
+  /* ---- blog list ---- */
+  [hidden] { display: none !important; }
+  .blog-head { margin-bottom: 0.5rem; }
+  .blog-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.2rem, 8vw, 3.6rem); line-height: 1; letter-spacing: -0.02em; }
+  .blog-sub { color: var(--muted); margin-top: 0.7rem; font-size: 0.92rem; max-width: 52ch; }
+  .rss-link { color: var(--accent); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 0.05rem 0.5rem; font-size: 0.72rem; letter-spacing: 0.08em; white-space: nowrap; }
+  .rss-link:hover { border-color: var(--accent); }
+  .search { width: 100%; font-family: inherit; font-size: 0.9rem; color: var(--ink); background: var(--bg-soft); border: 1px solid var(--line); border-radius: 12px; padding: 0.75rem 1rem; margin-bottom: 0.4rem; transition: border-color 0.2s ease; }
+  .search::placeholder { color: var(--muted); }
+  .search:focus { outline: none; border-color: var(--accent); }
+  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.8rem 0 2.2rem; }
+  .filter { font-family: inherit; font-size: 0.74rem; padding: 0.35rem 0.85rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: var(--bg-soft); cursor: pointer; transition: all 0.2s ease; }
+  .filter:hover { border-color: var(--accent); color: var(--ink); }
+  .filter.active { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .post-list { display: flex; flex-direction: column; gap: 1rem; }
+  .post-card { display: block; text-decoration: none; color: inherit; background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 1.4rem 1.5rem; position: relative; overflow: hidden; transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+  .post-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); opacity: 0.5; transition: opacity 0.25s ease; }
+  .post-card:hover { transform: translateX(4px); border-color: var(--accent); box-shadow: 0 18px 40px -22px rgba(95,242,201,0.35); }
+  .post-card:hover::before { opacity: 1; }
+  .pc-date { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .pc-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.28rem; color: var(--ink); margin: 0.35rem 0 0.5rem; line-height: 1.15; }
+  .pc-excerpt { font-size: 0.88rem; color: var(--ink-dim); margin-bottom: 0.9rem; }
+  .pc-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .empty { color: var(--muted); font-size: 0.9rem; padding: 2.5rem 0; text-align: center; border: 1px dashed var(--line); border-radius: 12px; }
+
+  /* ---- post view ---- */
+  .back { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--muted); text-decoration: none; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 1.8rem; transition: color 0.2s ease; }
+  .back:hover { color: var(--accent); }
+  .post-meta { color: var(--muted); font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .post-h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2rem, 7vw, 3.4rem); line-height: 1.04; letter-spacing: -0.02em; margin: 0.6rem 0 1rem; }
+  .post-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2.2rem; }
+
+  /* ---- prose (rendered markdown) ---- */
+  .prose { color: var(--ink-dim); font-size: 1.02rem; line-height: 1.78; max-width: 68ch; }
+  .prose > *:first-child { margin-top: 0; }
+  .prose h2 { font-family: 'Syne', sans-serif; color: var(--ink); font-size: 1.55rem; margin: 2.4rem 0 0.8rem; letter-spacing: -0.01em; }
+  .prose h3 { font-family: 'Syne', sans-serif; color: var(--ink); font-size: 1.22rem; margin: 1.8rem 0 0.6rem; }
+  .prose p { margin: 0 0 1.15rem; }
+  .prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  .prose strong { color: var(--ink); }
+  .prose ul, .prose ol { margin: 0 0 1.15rem 1.3rem; }
+  .prose li { margin: 0.35rem 0; }
+  .prose blockquote { border-left: 3px solid var(--accent); margin: 1.5rem 0; padding: 0.5rem 0 0.5rem 1.2rem; color: var(--ink); background: linear-gradient(90deg, rgba(95,242,201,0.06), transparent 60%); }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 6px; padding: 0.1rem 0.4rem; }
+  .prose pre { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1.3rem; overflow-x: auto; margin: 0 0 1.3rem; }
+  .prose pre code { background: none; border: none; padding: 0; font-size: 0.84rem; line-height: 1.6; }
+  .prose img { max-width: 100%; border-radius: 12px; border: 1px solid var(--line); margin: 1rem 0; }
+  .prose hr { border: none; border-top: 1px solid var(--line); margin: 2.2rem 0; }
 </style>
 </head>
 <body>
@@ -182,8 +238,16 @@
   <main class="wrap">
     <div class="status">
       <span class="live"><span class="dot"></span>runando · Badajoz · ES</span>
-      <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema">◐ Tema</button>
+      <span class="right">
+        <nav class="nav">
+          <a href="#/" data-route="home">Inicio</a>
+          <a href="#/blog" data-route="blog">Blog</a>
+        </nav>
+        <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema">◐ Tema</button>
+      </span>
     </div>
+
+    <section id="view-home">
 
     <img class="banner" src="fvivas.jpg" alt="Fernando Vivas: running, gravel, fotografía y desarrollo de software" />
 
@@ -200,7 +264,7 @@
 
     <div class="now">
       <span class="label">// ahora</span>
-      Involucrado en proyectos estratégicos de <b>IA, datos, IoT, LoRaWAN, automatización y datos</b> en la Diputación de Badajoz, dentro de la Red de Ciudades Inteligentes.
+      Lidero proyectos estratégicos de <b>IA, automatización y datos</b> en la Diputación de Badajoz, dentro de la Red de Ciudades Inteligentes.
     </div>
 
     <section class="block">
@@ -220,7 +284,7 @@
         <article class="project">
           <div class="p-org">Diputación de Badajoz</div>
           <div class="p-head"><span class="p-title">Responsable de IA · Transformación Digital</span><span class="p-date">dic 2025 → hoy</span></div>
-          <p class="p-desc">Cabeza visible de la IA. Dirección de proyectos estratégicos de IA, automatización y datos; gestión de licitaciones tecnológicas y plataformas corporativas. Miembro de grupos de trabajo nacionales de la Red de Ciudades Inteligentes.</p>
+          <p class="p-desc">Cabeza visible de la IA de la institución. Dirección de proyectos estratégicos de IA, automatización y datos; gestión de licitaciones tecnológicas y plataformas corporativas. Miembro de grupos de trabajo nacionales de la Red de Ciudades Inteligentes.</p>
           <div class="p-tags"><span class="p-tag">IA</span><span class="p-tag">Automatización</span><span class="p-tag">Datos</span><span class="p-tag">Contratación pública</span><span class="p-tag">Infraestructura</span></div>
         </article>
 
@@ -259,18 +323,37 @@
     <section class="block">
       <div class="section-label">// stack</div>
       <div class="stack">
-        <span class="tag">Inteligencia Artificial</span><span class="tag">Python</span><span class="tag">Big Data</span><span class="tag">LoRaWAN</span><span class="tag">IoT</span><span class="tag">ChirpStack</span><span class="tag">SCADA</span><span class="tag">MQTT</span><span class="tag">Go</span><span class="tag">Java / JEE</span><span class="tag">Spring Boot</span><span class="tag">Kafka</span><span class="tag">PostgreSQL / PostGIS</span><span class="tag">Docker Swarm</span><span class="tag">VueJS</span><span class="tag">DDD · TDD</span>
-        <span class="tag">SQL</span><span class="tag">Servidores de aplicaciones</span><span class="tag">JBOSS</span><span class="tag">TOMCAT</span><span class="tag"><span class="tag">NGINX</span>
+        <span class="tag">Inteligencia Artificial</span><span class="tag">Python</span><span class="tag">Big Data</span><span class="tag">LoRaWAN</span><span class="tag">IoT</span><span class="tag">ChirpStack</span><span class="tag">SCADA</span><span class="tag">MQTT</span><span class="tag">Go</span><span class="tag">Java / JEE</span><span class="tag">Spring Boot</span><span class="tag">Kafka</span><span class="tag">PostgreSQL / PostGIS</span><span class="tag">Docker Swarm</span><span class="tag">VueJS</span><span class="tag">DDD · TDD</span><span class="tag">SQL</span><span class="tag">Servidores de aplicaciones</span><span class="tag">JBoss</span><span class="tag">Tomcat</span><span class="tag">NGINX</span>
       </div>
     </section>
 
     <section class="block">
       <div class="section-label">// dónde encontrarme</div>
       <div class="links">
+        <a class="link" href="#/blog">Blog <span class="arrow">&rarr;</span></a>
         <a class="link" href="https://x.com/runando" target="_blank" rel="noopener">X / @runando <span class="arrow">&#8599;</span></a>
         <a class="link" href="https://github.com/runando" target="_blank" rel="noopener">GitHub <span class="arrow">&#8599;</span></a>
         <a class="link" href="https://www.linkedin.com/in/fernando-vivas-1a032380/" target="_blank" rel="noopener">LinkedIn <span class="arrow">&#8599;</span></a>
       </div>
+    </section>
+    </section><!-- /view-home -->
+
+    <section id="view-blog" hidden>
+      <div class="blog-head">
+        <div class="blog-title">Blog</div>
+        <p class="blog-sub">Notas sobre IA en lo público, IoT y LoRaWAN, datos, arquitectura de software y lo que se cruce por el camino. <a class="rss-link" href="feed.xml" target="_blank" rel="noopener">RSS</a></p>
+      </div>
+      <input id="search" class="search" type="search" placeholder="Buscar por título, tema o resumen…" autocomplete="off" />
+      <div class="filters" id="filters"></div>
+      <div class="post-list" id="postList"></div>
+    </section>
+
+    <section id="view-post" hidden>
+      <a class="back" href="#/blog">&larr; Volver al blog</a>
+      <div class="post-meta" id="postDate"></div>
+      <h1 class="post-h1" id="postTitle"></h1>
+      <div class="post-tags" id="postTags"></div>
+      <article class="prose" id="postBody"></article>
     </section>
 
     <footer>
@@ -279,6 +362,7 @@
     </footer>
   </main>
 
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -333,6 +417,133 @@
       t += 0.6; requestAnimationFrame(draw);
     }
     draw();
+  })();
+
+  // ---- Blog: hash router + markdown loader (no build step) ----
+  (function () {
+    var views = {
+      home: document.getElementById('view-home'),
+      blog: document.getElementById('view-blog'),
+      post: document.getElementById('view-post')
+    };
+    var navLinks = document.querySelectorAll('.nav a');
+    var POSTS = null;
+    var activeTag = 'Todos';
+    var query = '';
+
+    function show(name) {
+      for (var k in views) { if (views[k]) views[k].hidden = (k !== name); }
+      navLinks.forEach(function (a) {
+        a.classList.toggle('active', a.getAttribute('data-route') === (name === 'post' ? 'blog' : name));
+      });
+      window.scrollTo(0, 0);
+    }
+
+    function fmtDate(iso) {
+      try {
+        return new Date(iso + 'T00:00:00').toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+      } catch (e) { return iso; }
+    }
+
+    function tagChip(t) { return '<span class="p-tag">' + t + '</span>'; }
+
+    function loadPosts() {
+      if (POSTS) return Promise.resolve(POSTS);
+      return fetch('posts.json', { cache: 'no-cache' })
+        .then(function (r) { if (!r.ok) throw new Error('no index'); return r.json(); })
+        .then(function (list) {
+          POSTS = (list || []).slice().sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+          return POSTS;
+        })
+        .catch(function () { POSTS = []; return POSTS; });
+    }
+
+    function renderBlog() {
+      return loadPosts().then(function (posts) {
+        var filters = document.getElementById('filters');
+        var listEl = document.getElementById('postList');
+
+        if (!posts.length) {
+          filters.innerHTML = '';
+          listEl.innerHTML = '<div class="empty">Aún no hay posts publicados. (Si lo ves en local, recuerda que el blog carga al desplegarse en GitHub Pages.)</div>';
+          return;
+        }
+
+        var tagSet = {};
+        posts.forEach(function (p) { (p.tags || []).forEach(function (t) { tagSet[t] = true; }); });
+        var tags = ['Todos'].concat(Object.keys(tagSet).sort());
+        filters.innerHTML = tags.map(function (t) {
+          return '<button class="filter' + (t === activeTag ? ' active' : '') + '" data-tag="' + t + '">' + t + '</button>';
+        }).join('');
+        filters.querySelectorAll('.filter').forEach(function (b) {
+          b.addEventListener('click', function () { activeTag = b.getAttribute('data-tag'); renderBlog(); });
+        });
+
+        var visible = posts.filter(function (p) {
+          var tagOk = activeTag === 'Todos' || (p.tags || []).indexOf(activeTag) !== -1;
+          if (!tagOk) return false;
+          if (!query) return true;
+          var hay = (p.title + ' ' + (p.excerpt || '') + ' ' + (p.tags || []).join(' ')).toLowerCase();
+          return hay.indexOf(query) !== -1;
+        });
+        if (!visible.length) {
+          listEl.innerHTML = '<div class="empty">Sin resultados para esta búsqueda.</div>';
+          return;
+        }
+        listEl.innerHTML = visible.map(function (p) {
+          var dateLine = fmtDate(p.date) + (p.updated && p.updated !== p.date ? ' · act. ' + fmtDate(p.updated) : '');
+          return '<a class="post-card" href="#/post/' + encodeURIComponent(p.slug) + '">' +
+                   '<div class="pc-date">' + dateLine + '</div>' +
+                   '<div class="pc-title">' + p.title + '</div>' +
+                   (p.excerpt ? '<div class="pc-excerpt">' + p.excerpt + '</div>' : '') +
+                   '<div class="pc-tags">' + (p.tags || []).map(tagChip).join('') + '</div>' +
+                 '</a>';
+        }).join('');
+      });
+    }
+
+    function renderPost(slug) {
+      return loadPosts().then(function (posts) {
+        var p = posts.filter(function (x) { return x.slug === slug; })[0];
+        var body = document.getElementById('postBody');
+        if (!p) {
+          document.getElementById('postTitle').textContent = 'Post no encontrado';
+          document.getElementById('postDate').textContent = '';
+          document.getElementById('postTags').innerHTML = '';
+          body.innerHTML = '<p>No existe ese post. <a href="#/blog">Volver al blog</a>.</p>';
+          return;
+        }
+        document.getElementById('postTitle').textContent = p.title;
+        document.getElementById('postDate').textContent = 'Publicado ' + fmtDate(p.date) +
+          (p.updated && p.updated !== p.date ? ' · Actualizado ' + fmtDate(p.updated) : '');
+        document.getElementById('postTags').innerHTML = (p.tags || []).map(tagChip).join('');
+        body.innerHTML = '<p>Cargando…</p>';
+        return fetch(p.file || ('posts/' + p.slug + '.md'), { cache: 'no-cache' })
+          .then(function (r) { if (!r.ok) throw new Error('404'); return r.text(); })
+          .then(function (md) {
+            md = md.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+            body.innerHTML = (window.marked ? window.marked.parse(md) : md.replace(/\n/g, '<br>'));
+            document.title = p.title + ' — Fernando Vivas';
+          })
+          .catch(function () { body.innerHTML = '<p>No se pudo cargar el contenido del post.</p>'; });
+      });
+    }
+
+    function router() {
+      var h = location.hash.replace(/^#/, '');
+      if (h.indexOf('/post/') === 0) { show('post'); renderPost(decodeURIComponent(h.slice(6))); }
+      else if (h === '/blog') { show('blog'); renderBlog(); }
+      else { show('home'); document.title = 'Fernando Vivas — IA, Desarrollo Software, Digitalización y Transformación Digital Pública'; }
+    }
+
+    var searchEl = document.getElementById('search');
+    if (searchEl) searchEl.addEventListener('input', function () {
+      query = searchEl.value.toLowerCase().trim();
+      renderBlog();
+    });
+
+    window.addEventListener('hashchange', router);
+    router();
   })();
 </script>
 </body>
