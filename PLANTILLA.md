@@ -5,9 +5,6 @@ tags: [Tema, Otro Tema]
 excerpt: "Una frase corta que resume el post. Aparece en la lista del blog."
 draft: true
 ---
-**Cómo usar esta plantilla:** copia este archivo, renómbralo (p. ej. `mi-post.md`), edita la cabecera de arriba y, cuando esté listo, **borra la línea `draft: true`**. Mientras tenga esa línea, el post no se publica.
-
-A partir de aquí escribes en Markdown. Esto es lo que entiende la web y cómo se ve:
 
 ## Un encabezado de sección (##)
 
@@ -49,7 +46,7 @@ def hola(nombre: str) -> str:
 
 Para una imagen, súbela a una carpeta (p. ej. `posts/img/`) y enlázala así:
 
-![Texto alternativo](img/mi-imagen.jpg)
+![Texto alternativo](fvivas.jpg)
 
 ---
 
